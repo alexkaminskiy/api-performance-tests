@@ -15,6 +15,8 @@ on:
 
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   load-test:
@@ -30,7 +32,6 @@ jobs:
     - name: Build Locust Image
       run: docker buildx build --load -t perf-tests .
     
-    
     - name: Create Docker Network
       run: docker network create locust-net
 
@@ -45,8 +46,7 @@ jobs:
           -p 5558:5558 \
           perf-tests \
           locust -f locustfile.py --master --web-host=0.0.0.0
-    
-          
+     
     - name: Wait for Locust Master
       run: sleep 5
 
