@@ -1,4 +1,4 @@
-name: Distributed Load Test (Locust)
+name: CI
 
 on:
   workflow_dispatch:
@@ -29,6 +29,10 @@ jobs:
 
     - name: Build Locust Image
       run: docker buildx build --load -t perf-tests .
+    
+    
+    - name: Create Docker Network
+      run: docker network create locust-net
 
     - name: List Docker images
       run: docker image ls
@@ -41,6 +45,10 @@ jobs:
           -p 5558:5558 \
           perf-tests \
           locust -f locustfile.py --master --web-host=0.0.0.0
+    
+          
+    - name: Wait for Locust Master
+      run: sleep 5
 
     - name: Start Locust Workers (3 workers)
       run: |
@@ -57,14 +65,16 @@ jobs:
         docker exec locust-master \
           locust -f locustfile.py \
           --headless \
-          -u ${{ github.event.inputs.users }} \
-          -r ${{ github.event.inputs.spawn_rate }} \
-          --run-time ${{ github.event.inputs.duration }} \  
+          -u "${{ github.event.inputs.users }}" \
+          -r "${{ github.event.inputs.spawn_rate }}" \
+          --run-time "${{ github.event.inputs.duration }}" \  
           --host http://eaapi.somee.com/ \
           --html /app/locust-report.html
 
     - name: Copy report from container
-      run: docker cp locust-master:/app/locust-report.html locust-report.html
+      run: |
+        mkdir -p locust-report 
+        docker cp locust-master:/app/locust-report.html locust-report.html
 
     - name: Upload Load Test Report
       uses: actions/upload-artifact@v4
@@ -77,4 +87,7 @@ jobs:
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: .
+        publish_dir: locust-report
+    
+    - name: Cleanup
+      run: docker rm -f locust-master worker-1 worker-2 worker-3 || true
