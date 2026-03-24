@@ -39,7 +39,7 @@ class BaseClient:
         url = self._url(path)
         logger.info(f"GET {url}")
 
-        return self.client.get(                      # <-- Locust tracked GET
+        return self.client.get(                  
             url,
             headers=self.headers,
             **kwargs
@@ -49,7 +49,7 @@ class BaseClient:
         url = self._url(path)
         logger.info(f"POST {url}")
 
-        return self.client.post(                     # <-- Locust tracked POST
+        return self.client.post(                    
             url,
             headers=self.headers,
             **kwargs

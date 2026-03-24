@@ -2,6 +2,7 @@
 import os
 from dotenv import load_dotenv
 
+
 load_dotenv()
 
 BASE_URL = "http://eaapi.somee.com/"
