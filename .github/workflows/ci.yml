@@ -65,9 +65,9 @@ jobs:
         docker exec locust-master \
           locust -f locustfile.py \
           --headless \
-          -u ${{ github.event.inputs.users }} \
-          -r ${{ github.event.inputs.spawn_rate }} \
-          --run-time ${{ github.event.inputs.duration }} \  
+          -u "${{ github.event.inputs.users || 5 }}" \
+          -r "${{ github.event.inputs.spawn_rate || 0.1 }}" \
+          --run-time "${{ github.event.inputs.duration || '2m' }}" \
           --host http://eaapi.somee.com/ \
           --html /app/locust-report.html
 
