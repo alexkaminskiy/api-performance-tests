@@ -74,16 +74,21 @@ jobs:
           --host http://eaapi.somee.com/ \
           --html /app/locust-report.html
 
+    
     - name: Copy report from container
       run: |
-        mkdir -p locust-report 
         docker cp locust-master:/app/locust-report.html locust-report.html
+    
+    - name: Prepare report directory
+      run: |
+        mkdir -p locust-report
+        mv locust-report.html locust-report/index.html
 
     - name: Upload Load Test Report
       uses: actions/upload-artifact@v4
       with:
         name: locust-report
-        path: locust-report.html
+        path: locust-report/
 
     # Optional: Deploy to GitHub Pages
     - name: Deploy Locust Report to GitHub Pages
