@@ -74,7 +74,6 @@ jobs:
           --host http://eaapi.somee.com/ \
           --html /app/locust-report.html
 
-    
     - name: Set timestamp
       run: echo "REPORT_TS=$(date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_ENV
 
@@ -87,11 +86,10 @@ jobs:
 
     - name: Prepare timestamped report folder
       run: |
-        mkdir -p "${GITHUB_WORKSPACE}/reports/${{ env.REPORT_TS }}"
-        mv locust-report.html "${GITHUB_WORKSPACE}/reports/${{ env.REPORT_TS }}/index.html"
+        mkdir -p site/reports/${{ env.REPORT_TS }}
+        mv locust-report.html site/reports/${{ env.REPORT_TS }}/index.html
 
 
-    
     - name: Upload Load Test Report (timestamped)
       uses: actions/upload-artifact@v4
       with:
@@ -104,7 +102,7 @@ jobs:
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: reports
+        publish_dir: site
     
     - name: Cleanup
       run: docker rm -f locust-master worker-1 worker-2 worker-3 || true
