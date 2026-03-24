@@ -1,0 +1,80 @@
+# ------------------------
+# Python
+# ------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pkl
+*.pdb
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environment
+venv/
+.venv/
+env/
+ENV/
+*.env
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# ------------------------
+# Locust
+# ------------------------
+# Locust statistics & generated reports
+*.csv
+*.html
+locust-report.html
+reports/
+stats/
+
+# Locust distributed cluster temp files
+*.log
+*.db
+*.tmp
+
+# ------------------------
+# IDEs / Editors
+# ------------------------
+
+# PyCharm
+.idea/
+
+# VSCode
+.vscode/
+.history/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# ------------------------
+# OS Files
+# ------------------------
+.DS_Store
+Thumbs.db
+
+# ------------------------
+# Docker
+# ------------------------
+docker-data/
+*.tar
+
+# ------------------------
+# Logs
+# ------------------------
+logs/
+*.log
+
+# ------------------------
+# Test Artifacts
+# ------------------------
+*.json
+*.xml
+*.out
+artifacts/
