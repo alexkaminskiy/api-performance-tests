@@ -7,11 +7,11 @@ from config.settings import DEFAULT_PRODUCT_ID
 class MixedLoadTasks(TaskSet):
 
     def on_start(self):
-        auth = AuthClient()
+        auth = AuthClient(self.client)
         token = auth.login()
 
-        self.products = ProductClient(token=token)
-        self.components = ComponentClient(token=token)
+        self.products = ProductClient(self.client, token=token)
+        self.components = ComponentClient(self.client, token=token)
 
     @task(3)
     def fetch_products(self):

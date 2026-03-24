@@ -5,7 +5,7 @@ from config.settings import DEFAULT_PRODUCT_ID
 class ProductTasks(TaskSet):
 
     def on_start(self):
-        self.client_api = ProductClient()
+        self.client_api = ProductClient(self.client)
 
     @task
     def get_product_by_id(self):

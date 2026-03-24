@@ -5,7 +5,7 @@ from config.settings import DEFAULT_PRODUCT_ID
 class ComponentTasks(TaskSet):
 
     def on_start(self):
-        self.client_api = ComponentClient()
+        self.client_api = ComponentClient(self.client)
 
     @task
     def get_components_by_product(self):

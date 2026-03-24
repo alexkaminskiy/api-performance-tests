@@ -4,7 +4,7 @@ from clients.auth_client import AuthClient
 class AuthTasks(TaskSet):
 
     def on_start(self):
-        self.client_api = AuthClient()
+        self.client_api = AuthClient(self.client)
         self.client_api.login()
 
     @task

@@ -1,13 +1,14 @@
-import requests
 from config.settings import BASE_URL, AUTH_USER_NAME, AUTH_PASSWORD
 from utils.logger import get_logger
+import requests
 
 logger = get_logger()
 
 class BaseClient:
-    def __init__(self, token=None, base_url=BASE_URL):
+
+    def __init__(self, locust_client, token=None, base_url=BASE_URL):
+        self.client = locust_client                    # <-- Locust HttpUser client
         self.base_url = base_url.rstrip("/")
-        self.session = requests.Session()
         self.token = token if token else self._get_token()
 
     @property
@@ -16,6 +17,9 @@ class BaseClient:
         if self.token:
             h["Authorization"] = f"Bearer {self.token}"
         return h
+
+    def _url(self, path: str):
+        return f"{self.base_url}/{path.lstrip('/')}"
 
     def _get_token(self):
         auth_url = self._url('/api/Authenticate/Login')
@@ -31,15 +35,22 @@ class BaseClient:
         logger.info("Token successfully retrieved")
         return token
 
-    def _url(self, path: str):
-        return f"{self.base_url}/{path.lstrip('/')}"
-
     def get(self, path, **kwargs):
         url = self._url(path)
         logger.info(f"GET {url}")
-        return self.session.get(url, headers=self.headers, **kwargs)
+
+        return self.client.get(                      # <-- Locust tracked GET
+            url,
+            headers=self.headers,
+            **kwargs
+        )
 
     def post(self, path, **kwargs):
         url = self._url(path)
         logger.info(f"POST {url}")
-        return self.session.post(url, headers=self.headers, **kwargs)
+
+        return self.client.post(                     # <-- Locust tracked POST
+            url,
+            headers=self.headers,
+            **kwargs
+        )
