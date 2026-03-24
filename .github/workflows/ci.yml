@@ -81,11 +81,15 @@ jobs:
     - name: Copy report from container
       run: |
         docker cp locust-master:/app/locust-report.html locust-report.html
-    
+
+    - name: Ensure workspace
+      run: cd "${GITHUB_WORKSPACE}"
+
     - name: Prepare timestamped report folder
       run: |
-        mkdir -p reports/$REPORT_TS
-        mv locust-report.html reports/$REPORT_TS/index.html
+        mkdir -p "${GITHUB_WORKSPACE}/reports/${{ env.REPORT_TS }}"
+        mv locust-report.html "${GITHUB_WORKSPACE}/reports/${{ env.REPORT_TS }}/index.html"
+
 
     
     - name: Upload Load Test Report (timestamped)
