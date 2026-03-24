@@ -2,16 +2,16 @@ name: Distributed Load Test (Locust)
 
 on:
   workflow_dispatch:
-  inputs:
-      users:
-        description: "Total users"
-        default: "5"
-      spawn_rate:
-        description: "Spawn rate"
-        default: "0.1"
-      duration:
-        description: "Duration"
-        default: "2m"
+    inputs:
+        users:
+          description: "Total users"
+          default: "5"
+        spawn_rate:
+          description: "Spawn rate"
+          default: "0.1"
+        duration:
+          description: "Duration"
+          default: "2m"
 
   push:
     branches: [ main ]
