@@ -81,28 +81,22 @@ jobs:
       run: |
         docker cp locust-master:/app/locust-report.html locust-report.html
 
-    - name: Ensure workspace
-      run: cd "${GITHUB_WORKSPACE}"
-
     - name: Prepare timestamped report folder
       run: |
         mkdir -p site/reports/${{ env.REPORT_TS }}
         mv locust-report.html site/reports/${{ env.REPORT_TS }}/index.html
 
-
     - name: Upload Load Test Report (timestamped)
       uses: actions/upload-artifact@v4
       with:
         name: locust-report-${{ env.REPORT_TS }}
-        path: reports/${{ env.REPORT_TS }}/
+        path: site/reports/${{ env.REPORT_TS }}/
 
-
-    # Optional: Deploy to GitHub Pages
     - name: Deploy Locust Report to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: site
-    
+
     - name: Cleanup
       run: docker rm -f locust-master worker-1 worker-2 worker-3 || true
