@@ -85,6 +85,9 @@ jobs:
       run: |
         mkdir -p site/reports/${{ env.REPORT_TS }}
         mv locust-report.html site/reports/${{ env.REPORT_TS }}/index.html
+        # update latest
+        rm -rf site/reports/latest
+        cp -R site/reports/${{ env.REPORT_TS }} site/reports/latest
 
     - name: Upload Load Test Report (timestamped)
       uses: actions/upload-artifact@v4
@@ -97,6 +100,8 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: site
+        keep_files: true
+        publish_branch: gh-pages
 
     - name: Cleanup
       run: docker rm -f locust-master worker-1 worker-2 worker-3 || true
