@@ -14,7 +14,7 @@ on:
         default: 0.1
       duration:
         description: "Duration"
-        default: 2m
+        default: 1m
 
   push:
     branches: [ main ]
@@ -68,9 +68,9 @@ jobs:
         docker exec locust-master \
           locust -f locustfile.py \
           --headless \
-          -u "${{ github.event.inputs.users || 5 }}" \
+          -u "${{ github.event.inputs.users || 2 }}" \
           -r "${{ github.event.inputs.spawn_rate || 0.1 }}" \
-          --run-time "${{ github.event.inputs.duration || '2m' }}" \
+          --run-time "${{ github.event.inputs.duration || '1m' }}" \
           --host http://eaapi.somee.com/ \
           --html /app/locust-report.html
 
