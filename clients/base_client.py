@@ -6,7 +6,7 @@ logger = get_logger()
 
 class BaseClient:
 
-    def __init__(self, locust_client, token=None, base_url=BASE_URL):
+    def __init__(self, locust_client, token=None, base_url: str = BASE_URL):
         self.client = locust_client                    # <-- Locust HttpUser client
         self.base_url = base_url.rstrip("/")
         self.token = token if token else self._get_token()
