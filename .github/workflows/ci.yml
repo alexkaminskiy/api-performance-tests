@@ -102,6 +102,17 @@ jobs:
         publish_dir: site
         keep_files: true
         publish_branch: gh-pages
+    
+    - name: Send Teams Notification
+      if: always()   # send even if tests fail
+      run: |
+          MESSAGE="Performance Test Run Completed for ${{ env.REPORT_TS }}%0A\
+          HTML Report: https://alexkaminskiy.github.io/api-performance-tests/reports/${{ env.REPORT_TS }}/%0A\
+          Latest Report: https://alexkaminskiy.github.io/api-performance-tests/reports/latest/"
 
+              curl -H "Content-Type: application/json" \
+                  -d "{\"text\": \"${MESSAGE}\"}" \
+                  ${{ secrets.TEAMS_WEBHOOK_URL }}
+    
     - name: Cleanup
       run: docker rm -f locust-master worker-1 worker-2 worker-3 || true
