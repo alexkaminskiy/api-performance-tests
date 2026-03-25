@@ -8,10 +8,9 @@ class MixedLoadTasks(TaskSet):
 
     def on_start(self):
         auth = AuthClient(self.client)
-        token = auth.login()
 
-        self.products = ProductClient(self.client, token=token)
-        self.components = ComponentClient(self.client, token=token)
+        self.products = ProductClient(self.client)
+        self.components = ComponentClient(self.client)
 
     @task(20)
     def fetch_products(self):
