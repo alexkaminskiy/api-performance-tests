@@ -2,12 +2,13 @@
 
 ### Project Structure
 ```bash
-performance-framework/
+api-performance-tests/
 │
 ├── locustfile.py
 ├── requirements.txt
 ├── Dockerfile
 ├── README.md
+├── .gitignore 
 │
 ├── config/
 │   ├── settings.py

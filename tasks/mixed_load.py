@@ -8,19 +8,18 @@ class MixedLoadTasks(TaskSet):
 
     def on_start(self):
         auth = AuthClient(self.client)
-        token = auth.login()
 
-        self.products = ProductClient(self.client, token=token)
-        self.components = ComponentClient(self.client, token=token)
+        self.products = ProductClient(self.client)
+        self.components = ComponentClient(self.client)
 
-    @task(3)
+    @task(20)
     def fetch_products(self):
         self.products.get_all_products()
 
-    @task(2)
+    @task(50)
     def fetch_components(self):
         self.components.get_by_product(DEFAULT_PRODUCT_ID)
 
-    @task(1)
+    @task(30)
     def health_auth(self):
         self.products.get("/api/Authenticate/Get")

@@ -63,9 +63,17 @@ jobs:
           locust -f locustfile.py --worker --master-host=locust-master
         done
 
-    - name: Run Test in Headless Mode (20 users, 5 spawn rate, 60 sec)
+    - name: Run Load Test in Headless Mode
+      env:
+          BASE_URL: ${{ vars.BASE_URL }}
+          AUTH_USER_NAME: ${{ secrets.AUTH_USER_NAME }}
+          AUTH_PASSWORD: ${{ secrets.AUTH_PASSWORD }}
       run: |
-        docker exec locust-master \
+        docker exec \
+          -e BASE_URL="$BASE_URL" \
+          -e AUTH_USER_NAME="$AUTH_USER_NAME" \
+          -e AUTH_PASSWORD="$AUTH_PASSWORD" \
+          locust-master \
           locust -f locustfile.py \
           --headless \
           -u "${{ github.event.inputs.users || 2 }}" \
@@ -102,6 +110,17 @@ jobs:
         publish_dir: site
         keep_files: true
         publish_branch: gh-pages
+    
+    - name: Send Teams Notification
+      if: always()   # send even if tests fail
+      run: |
+          MESSAGE="Performance Test Run Completed for ${{ env.REPORT_TS }}\nHTML Report:
+             https://alexkaminskiy.github.io/api-performance-tests/reports/${{ env.REPORT_TS }}/\nLatest Report:
+             https://alexkaminskiy.github.io/api-performance-tests/reports/latest/"
 
+              curl -H "Content-Type: application/json" \
+                  -d "{\"text\": \"${MESSAGE}\"}" \
+                  ${{ secrets.TEAMS_WEBHOOK_URL }}
+    
     - name: Cleanup
       run: docker rm -f locust-master worker-1 worker-2 worker-3 || true
