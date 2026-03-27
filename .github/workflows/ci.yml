@@ -114,8 +114,8 @@ jobs:
     - name: Send Teams Notification
       if: always()   # send even if tests fail
       run: |
-          MESSAGE="Performance Test Run Completed for ${{ env.REPORT_TS }} \n \
-          HTML Report: https://alexkaminskiy.github.io/api-performance-tests/reports/${{ env.REPORT_TS }}/ \n \
+          MESSAGE="Performance Test Run Completed for ${{ env.REPORT_TS }} \n\
+          HTML Report: https://alexkaminskiy.github.io/api-performance-tests/reports/${{ env.REPORT_TS }}/ \n\
           Latest Report: https://alexkaminskiy.github.io/api-performance-tests/reports/latest/"
 
               curl -H "Content-Type: application/json" \
