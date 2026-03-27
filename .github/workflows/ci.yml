@@ -66,12 +66,12 @@ jobs:
     - name: Run Load Test in Headless Mode
       env:
           BASE_URL: ${{ vars.BASE_URL }}
-          AUTH_USER: ${{ secrets.AUTH_USER_NAME }}
+          AUTH_USER_NAME: ${{ secrets.AUTH_USER_NAME }}
           AUTH_PASSWORD: ${{ secrets.AUTH_PASSWORD }}
       run: |
         docker exec \
           -e BASE_URL="$BASE_URL" \
-          -e AUTH_USER="$AUTH_USER" \
+          -e AUTH_USER_NAME="$AUTH_USER_NAME" \
           -e AUTH_PASSWORD="$AUTH_PASSWORD" \
           locust-master \
           locust -f locustfile.py \
