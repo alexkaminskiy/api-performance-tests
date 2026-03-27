@@ -69,11 +69,12 @@ jobs:
           AUTH_USER: ${{ secrets.AUTH_USER_NAME }}
           AUTH_PASSWORD: ${{ secrets.AUTH_PASSWORD }}
       run: |
-        docker exec locust-master \
-          locust -f locustfile.py \
+        docker exec \
           -e BASE_URL="$BASE_URL" \
           -e AUTH_USER="$AUTH_USER_NAME" \
           -e AUTH_PASSWORD="$AUTH_PASSWORD" \
+          locust-master \
+          locust -f locustfile.py \
           --headless \
           -u "${{ github.event.inputs.users || 2 }}" \
           -r "${{ github.event.inputs.spawn_rate || 0.1 }}" \
