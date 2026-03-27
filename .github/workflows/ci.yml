@@ -71,7 +71,7 @@ jobs:
       run: |
         docker exec \
           -e BASE_URL="$BASE_URL" \
-          -e AUTH_USER="$AUTH_USER_NAME" \
+          -e AUTH_USER="$AUTH_USER" \
           -e AUTH_PASSWORD="$AUTH_PASSWORD" \
           locust-master \
           locust -f locustfile.py \
