@@ -63,10 +63,17 @@ jobs:
           locust -f locustfile.py --worker --master-host=locust-master
         done
 
-    - name: Run Test in Headless Mode (20 users, 5 spawn rate, 60 sec)
+    - name: Run Load Test in Headless Mode
+      env:
+          BASE_URL: ${{ vars.BASE_URL }}
+          AUTH_USER: ${{ secrets.AUTH_USER_NAME }}
+          AUTH_PASSWORD: ${{ secrets.AUTH_PASSWORD }}
       run: |
         docker exec locust-master \
           locust -f locustfile.py \
+          -e BASE_URL="$BASE_URL" \
+          -e AUTH_USER="$AUTH_USER_NAME" \
+          -e AUTH_PASSWORD="$AUTH_PASSWORD" \
           --headless \
           -u "${{ github.event.inputs.users || 2 }}" \
           -r "${{ github.event.inputs.spawn_rate || 0.1 }}" \
